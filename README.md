@@ -1,2 +1,4 @@
-# gtd-g03A
-gtd-g03a
+Group Members
+Abigail Canedo López
+Álvaro Artidiello Solís
+Miguel Bello Barco

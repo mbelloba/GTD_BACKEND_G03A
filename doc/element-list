@@ -1,0 +1,5 @@
+com.capgemini.configuration
+com.capgemini.controllers
+com.capgemini.model
+com.capgemini.persistence
+validators
