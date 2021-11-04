@@ -13,13 +13,16 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.data.rest.core.annotation.RestResource;
+
 /**
  * Class that specifies User properties
  * @author gtd-g03
  *
  */
 @Entity
-@Table(name = "TUSERS")
+@Table(name="user")
+@RestResource(rel="users", path="user")
 public class User {
 
 	@Id
@@ -34,8 +37,8 @@ public class User {
 	private UserStatus status = UserStatus.ENABLED;
 	
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private List<Task> tasks;
+	//@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	//private List<Task> tasks;
 	public User() {	}
 	
 	public User(String email, boolean isAdmin, String login, String password, UserStatus status) {
@@ -96,7 +99,7 @@ public class User {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, id, isAdmin, login, password, status, tasks);
+		return Objects.hash(email, id, isAdmin, login, password, status);
 	}
 
 	@Override
@@ -110,14 +113,14 @@ public class User {
 		User other = (User) obj;
 		return Objects.equals(email, other.email)
 				&& Objects.equals(id, other.id) && isAdmin == other.isAdmin && Objects.equals(login, other.login)
-				&& Objects.equals(password, other.password) && Objects.equals(status, other.status)
-				&& Objects.equals(tasks, other.tasks);
+				&& Objects.equals(password, other.password) && Objects.equals(status, other.status);
+				
 	}
 
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", email=" + email + ", isAdmin=" + isAdmin + ", login=" + login + ", password="
-				+ password + ", status=" + status + ", tasks=" + tasks + "]";
+				+ password + ", status=" + status + ", ]";
 	}
 	
 	

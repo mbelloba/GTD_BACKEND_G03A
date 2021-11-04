@@ -7,6 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.capgemini.model.ApiResponse;
+import com.capgemini.model.LoginDto;
 import com.capgemini.model.User;
 import com.capgemini.persistence.UserRepository;
 
@@ -54,26 +56,29 @@ public class UserService {
 		repository.deleteById(id);
 	}
 	
+	
+	
 	/**
 	 * 
 	 * @param user
-	 * @return true if user is validated
+	 * @return login method
 	 */
-	public boolean validateUser (User user) {
-
-        List<User> users = (List<User>) repository.findAll();
-        boolean validatedUser = false;
-        for (User u:users ) {
-            if(user.getPassword().equals(u.getPassword())){
-                if(user.getPassword().equals(u.getPassword())){
-                    validatedUser = true;
-
-                }
-            }
-
+	
+	
+    public ApiResponse login(User user) {
+		
+        User u = repository.findByUsername(user.getLogin());
+        
+        if(u==null){
+            return new ApiResponse(402, "Login mismatch.",null);
         }
-        return validatedUser;
+        else if(!u.getPassword().equals(user.getPassword())){
+            return new ApiResponse(401, "Password mismatch.",null);
+        }
+        return new ApiResponse(200, "Login success", null) ;
+
     }
+    
 	
 	
 
