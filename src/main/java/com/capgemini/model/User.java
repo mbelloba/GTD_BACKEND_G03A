@@ -4,15 +4,19 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 /**
@@ -30,9 +34,14 @@ public class User {
 	private Long id;
 	
 	private String email;
+	
+	@ColumnDefault("False")
 	private boolean isAdmin;
 	private String login;
 	private String password;
+	@OneToMany(targetEntity= UsersGroup.class,cascade= {CascadeType.MERGE,CascadeType.PERSIST})
+	@JoinColumn(name="id")
+	private Long groupId;
 	@Enumerated(EnumType.STRING)
 	private UserStatus status = UserStatus.ENABLED;
 	
