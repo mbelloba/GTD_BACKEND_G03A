@@ -96,6 +96,7 @@ public class User {
 	public void setStatus(UserStatus status) {
 		this.status = status;
 	}
+	
 
 	@Override
 	public int hashCode() {
