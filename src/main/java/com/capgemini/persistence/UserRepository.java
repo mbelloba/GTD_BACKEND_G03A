@@ -1,7 +1,7 @@
 package com.capgemini.persistence;
 
-import org.springframework.data.repository.CrudRepository;
-
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import com.capgemini.model.User;
 
 /**
@@ -9,6 +9,14 @@ import com.capgemini.model.User;
  * @author gtd-g03
  *
  */
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
+	
+	/**
+	 * Find user from a determined login
+	 * @param username
+	 * @return user
+	 */
+	@Query("SELECT u FROM User u WHERE u.login = ?1")
+	User findByUsername(String login);
 
 }
