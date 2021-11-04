@@ -114,6 +114,14 @@ public class User {
 				&& Objects.equals(tasks, other.tasks);
 	}
 
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", email=" + email + ", isAdmin=" + isAdmin + ", login=" + login + ", password="
+				+ password + ", status=" + status + ", tasks=" + tasks + "]";
+	}
+	
+	
+
 
 		
 }
