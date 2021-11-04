@@ -1,4 +1,7 @@
 Group Members
 Abigail Canedo López
-Álvaro Artidiello Solís
+Álvaro Artidiello Morís
 Miguel Bello Barco
+
+Workflow: Branch per feature
+
