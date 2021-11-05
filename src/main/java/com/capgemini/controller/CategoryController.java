@@ -1,12 +1,9 @@
 package com.capgemini.controller;
 
-import java.security.Principal;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,75 +16,85 @@ import org.springframework.web.bind.annotation.RestController;
 import com.capgemini.model.Category;
 import com.capgemini.service.CategoryService;
 
+/**
+ * Class controller to process all incoming requests relative to categories
+ * @author GTD-G03A
+ *
+ */
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/category")
 public class CategoryController {
 
 	@Autowired
-	private CategoryService	categoryService;
+	private CategoryService	service;
 	
 	/**
-	 * Map web request for url: /category/list
-	 * @return View with a list of categories
+	 * Gets all categories of repository from a GET request
+	 * @return HTTP response with all tasks in body, and OK http status
 	 */
 	@GetMapping
-	public ResponseEntity<?> getCategories(Principal principal){
-		return new ResponseEntity<>(categoryService.findAll() ,HttpStatus.OK);
+	public ResponseEntity<?> findAll(){
+		return new ResponseEntity<>(service.list() ,HttpStatus.OK);
 
 	}
 	
+	/**
+	 * Get a determined category from a GET request
+	 * @param id Id of category to be retrieved 
+	 * @return HTTP response category found in repository
+	 * @throws ResourceNotFoundException Exception in case category do not exist
+	 */
 	@GetMapping("/{id}")
-	public ResponseEntity<?> findById(@PathVariable Long id) throws ResourceNotFoundException{
-		return new ResponseEntity<>(categoryService.findById(id),HttpStatus.OK);
+	public ResponseEntity<?> getCategory(@PathVariable(name = "id") Long id) throws ResourceNotFoundException{
+		Category category = service.get(id).orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
+		return ResponseEntity.ok().body(category);
 	}
 	
 	/**
-	 * Map web request for url: /category/post 
-	 * Use POST method from a form
-	 * @param category Category to be inserted in DB
-	 * @return String with view to display
+	 * Create a new category in repository from POST request
+	 * @param category Category to be created
+	 * @return HTTP response with category created in body, and ok http status
 	 */
 	@PostMapping
-	public  ResponseEntity<?> addCategory(@RequestBody Category category, @Validated Principal principal) {
-		return new ResponseEntity<>(categoryService.add(category),HttpStatus.OK);
+	public  ResponseEntity<?> save(@RequestBody Category category) {
+		return new ResponseEntity<>(service.create(category),HttpStatus.OK);
 
 	}
 	
-	/**
-	 * Map web request for url: /category/new
-	 * @return View with a new category form
-	 */
-	/*@GetMapping(value = "/new")
-	public ResponseEntity<?> newCategory() {
-		return new ResponseEntity<>("categoryform","category",new Category()) ,HttpStatus.OK);
-	}
-	*/
 	
+	/**
+	 * Delete a determined category from a DELETE request
+	 * @param id Id of category to be deleted
+	 * @return HTTP response with OK status
+	 * @throws ResourceNotFoundException Exception in case category do not exist
+	 */
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteById(@PathVariable Long id) throws ResourceNotFoundException{
-		categoryService.deleteById(id);
+		service.get(id).orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
+		service.deleteById(id); 
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	
+	/**
+	 * Update (or create) a category a from a PUT request
+	 * @param id Id of category to be updated/created
+	 * @param categoryDetails Category object with updated properties
+	 * @return HTTP response with updated category
+	 * @throws ResourceNotFoundException Exception in case category do not exist
+	 */
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateById(@PathVariable Long id, @RequestBody Category category){
+	public ResponseEntity<?> updateCategory(@PathVariable(name = "id") Long id, @RequestBody Category categoryDetails) throws ResourceNotFoundException {
 		
-		return new ResponseEntity <>(categoryService.updateById(id, category),HttpStatus.OK);
-		/*return categoryService.findById(id)
-				.map(category -> {
-				student.setName(newStudent.getName());
-				student.setSurname(newStudent.getSurname());
-				student.setCourse(newStudent.getCourse());
-				student.setBirthdate(newStudent.getBirthdate());
-				student.setCourse(newStudent.getCourse());
-				return service.save(student);
-				})
-				.orElseGet(() -> {
-				newStudent.setCod_stud(id);
-				return service.save(newStudent);
-				});
-		*/		
+		Category category = service.get(id).orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
+
+		category.setName(categoryDetails.getName());
+		category.setUser(categoryDetails.getUser());
+				
+		final Category updatedCategory = service.create(category);
+		return ResponseEntity.ok(updatedCategory);
+		
+		
 	}
 
 }

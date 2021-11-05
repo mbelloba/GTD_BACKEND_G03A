@@ -12,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.springframework.data.rest.core.annotation.RestResource;
 
 /**
  * This class provides the model for Task entity. This model is mapped to 'task' table in DB. 
@@ -21,7 +20,6 @@ import org.springframework.data.rest.core.annotation.RestResource;
  */
 @Entity
 @Table(name="task")
-@RestResource(rel="tasks", path="task")
 public class Task {
 	
 	@Id
