@@ -1,11 +1,12 @@
 package com.capgemini.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.capgemini.model.UsersGroup;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class UserDTO {
+public class UserDTO implements Serializable {
 	
 	@JsonProperty("userId")
 	public Long userId;
@@ -18,7 +19,7 @@ public class UserDTO {
 	@JsonProperty("password")
 	public String password;
 	@JsonProperty("UsersGroup")
-	public List<UsersGroup> UsersGroup;
+	public List<UsersGroup> usersGroup;
 	public Long getUserId() {
 		return userId;
 	}
@@ -50,10 +51,10 @@ public class UserDTO {
 		this.password = password;
 	}
 	public List<UsersGroup> getUsersGroup() {
-		return UsersGroup;
+		return usersGroup;
 	}
 	public void setUsersGroup(List<UsersGroup> usersGroup) {
-		UsersGroup = usersGroup;
+		usersGroup = usersGroup;
 	}
 	
 	

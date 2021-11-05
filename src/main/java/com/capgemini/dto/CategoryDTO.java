@@ -1,12 +1,13 @@
 package com.capgemini.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.capgemini.model.Task;
 import com.capgemini.model.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class CategoryDTO {
+public class CategoryDTO implements Serializable {
 	
 	@JsonProperty("id")
 	public Long id;

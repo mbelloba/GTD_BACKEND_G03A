@@ -40,7 +40,7 @@ public class User {
 	private UserStatus status = UserStatus.ENABLED;
 	@ManyToMany(cascade= {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	@JoinColumn(name="groupId")
-	List<UsersGroup> UsersGroup;
+	List<UsersGroup> usersGroup;
 
 	@OneToMany(cascade= {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	@JoinColumn(name="id")

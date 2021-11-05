@@ -1,12 +1,13 @@
 package com.capgemini.dto;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
 import com.capgemini.model.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class UsersGroupDTO {
+public class UsersGroupDTO implements Serializable {
 	
 	@JsonProperty("groupId")
 	public Long groupId;
