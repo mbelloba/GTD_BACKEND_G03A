@@ -34,7 +34,6 @@ public class UsersGroup {
 	@JoinColumn(name="userId")
 	public List<User> users;
 
-
 	public Long getId() {
 		return groupId;
 	}
