@@ -25,13 +25,12 @@ import org.springframework.data.rest.core.annotation.RestResource;
  *
  */
 @Entity
-@Table(name="user")
-@RestResource(rel="users", path="user")
+@Table(name="users")
 public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long userId;
 	
 	private String email;
 	
@@ -41,7 +40,9 @@ public class User {
 	private String password;
 	@Enumerated(EnumType.STRING)
 	private UserStatus status = UserStatus.ENABLED;
-	
+	@ManyToMany(cascade= {CascadeType.MERGE,CascadeType.PERSIST})
+	@JoinColumn(name="groupId")
+	List<UsersGroup> UsersGroup;
 	
 	//@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	//private List<Task> tasks;
@@ -56,11 +57,11 @@ public class User {
 	}
 	
 	public Long getId() {
-		return id;
+		return userId;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.userId = id;
 	}
 
 	public String getEmail() {
@@ -106,7 +107,7 @@ public class User {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, id, isAdmin, login, password, status);
+		return Objects.hash(email, userId, isAdmin, login, password, status);
 	}
 
 	@Override
@@ -119,14 +120,14 @@ public class User {
 			return false;
 		User other = (User) obj;
 		return Objects.equals(email, other.email)
-				&& Objects.equals(id, other.id) && isAdmin == other.isAdmin && Objects.equals(login, other.login)
+				&& Objects.equals(userId, other.userId) && isAdmin == other.isAdmin && Objects.equals(login, other.login)
 				&& Objects.equals(password, other.password) && Objects.equals(status, other.status);
 				
 	}
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", email=" + email + ", isAdmin=" + isAdmin + ", login=" + login + ", password="
+		return "User [id=" + userId + ", email=" + email + ", isAdmin=" + isAdmin + ", login=" + login + ", password="
 				+ password + ", status=" + status + ", ]";
 	}
 	

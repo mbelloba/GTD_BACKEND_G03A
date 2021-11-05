@@ -1,14 +1,11 @@
 package com.capgemini.model;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,33 +16,30 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.springframework.data.rest.core.annotation.RestResource;
-
 @Entity
 @Table(name="groups")
-@RestResource(rel="userGroups", path="userGroup")
 public class UsersGroup {
 
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long id;
+	public Long groupId;
 	public String name;
 	public String descripction;
-	@OneToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
-	@JoinColumn(name="id")
+	@ManyToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+	@JoinColumn(name="userId")
 	public User admin;
 	public Date creationDate;
-	@ManyToMany(targetEntity= User.class,cascade= {CascadeType.MERGE,CascadeType.PERSIST})
-	@JoinColumn(name="id")
+	@ManyToMany(cascade= {CascadeType.MERGE,CascadeType.PERSIST})
+	@JoinColumn(name="userId")
 	public List<User> users;
 
 
 	public Long getId() {
-		return id;
+		return groupId;
 	}
 	public void setId(Long id) {
-		this.id = id;
+		this.groupId = id;
 	}
 	public String getName() {
 		return name;
@@ -79,7 +73,7 @@ public class UsersGroup {
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(admin, creationDate, descripction, id, name, users);
+		return Objects.hash(admin, creationDate, descripction, groupId, name, users);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -91,7 +85,7 @@ public class UsersGroup {
 			return false;
 		UsersGroup other = (UsersGroup) obj;
 		return Objects.equals(admin, other.admin) && Objects.equals(creationDate, other.creationDate)
-				&& Objects.equals(descripction, other.descripction) && Objects.equals(id, other.id)
+				&& Objects.equals(descripction, other.descripction) && Objects.equals(groupId, other.groupId)
 				&& Objects.equals(name, other.name) && Objects.equals(users, other.users);
 	}
 
