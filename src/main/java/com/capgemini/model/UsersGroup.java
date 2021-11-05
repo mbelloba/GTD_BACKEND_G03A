@@ -36,7 +36,7 @@ public class UsersGroup {
 	@JoinColumn(name="id")
 	public User admin;
 	public Date creationDate;
-	@OneToMany(targetEntity= User.class,cascade= {CascadeType.MERGE,CascadeType.PERSIST})
+	@ManyToMany(targetEntity= User.class,cascade= {CascadeType.MERGE,CascadeType.PERSIST})
 	@JoinColumn(name="id")
 	public List<User> users;
 
