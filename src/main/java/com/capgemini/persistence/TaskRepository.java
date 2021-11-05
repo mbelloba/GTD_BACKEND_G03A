@@ -15,7 +15,7 @@ import com.capgemini.model.Task;
 /**
  * Task repository that extends of JpaRepository
  * Implements custom queries over datastore
- * @author gtd-g03
+ * @author GTD-G03A
  *
  */
 public interface TaskRepository extends JpaRepository<Task, Long>, CrudRepository<Task, Long> {
