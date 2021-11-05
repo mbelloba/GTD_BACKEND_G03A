@@ -60,7 +60,7 @@ public class TaskController {
 	}
 	
 	/**
-	 * Detele a determined task from a DELETE request
+	 * Delete a determined task from a DELETE request
 	 * @param id Id of task to be deleted
 	 * @return HTTP response with OK status
 	 * @throws ResourceNotFoundException Exception in case task do not exist
@@ -92,9 +92,34 @@ public class TaskController {
 		task.setCategory(taskDetails.getCategory());
 		
 		final Task updatedTask = service.create(task);
-		return ResponseEntity.ok(updatedTask);
-		
-		
+		return ResponseEntity.ok(updatedTask);	
+	}
+	
+	/**
+	 * Get all tasks from inbox category from a GET request
+	 * @return A list of tasks with inbox category
+	 */
+	@GetMapping("/inbox")
+	public ResponseEntity<?> getInbox() {
+		return new ResponseEntity<>(service.getInbox(), HttpStatus.OK);
+	}
+	
+	/**
+	 * Get all tasks planned for today from a GET request
+	 * @return A list of tasks planned for current date
+	 */
+	@GetMapping("/today")
+	public ResponseEntity<?> getToday() {
+		return new ResponseEntity<>(service.getToday(), HttpStatus.OK);
+	}
+	
+	/**
+	 * Get a list of tasks planned within a week from a GET request
+	 * @return A list os tasks planned for incoming week
+	 */
+	@GetMapping("/week")
+	public ResponseEntity<?> getWeek() {
+		return new ResponseEntity<>(service.getWeek(), HttpStatus.OK);
 	}
 
 }

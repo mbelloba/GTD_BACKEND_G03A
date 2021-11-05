@@ -12,16 +12,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.springframework.data.rest.core.annotation.RestResource;
-
 /**
  * This class provides the model for Task entity. This model is mapped to 'task' table in DB. 
  * @author GTD-G03A
  *
  */
 @Entity
-@Table(name="task")
-@RestResource(rel="tasks", path="task")
+@Table(name="tasks")
 public class Task {
 	
 	@Id
@@ -45,7 +42,9 @@ public class Task {
 	/**
 	 * No args constructor
 	 */
-	public Task() { }
+	public Task() { 
+		category.setId(1L);
+	}
 
 	/**
 	 * All args constructor

@@ -1,5 +1,7 @@
 package com.capgemini.service;
 
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,4 +55,32 @@ public class TaskService {
 	public void deleteById(Long id) {
 		repository.deleteById(id);
 	}
+	
+	/**
+	 * Get all tasks from inbox category from a GET request
+	 * @return A list of tasks with inbox category
+	 */
+	public List<Task> getInbox() {
+		return repository.findTaskByCategoryId(1L);
+	}
+	
+	/**
+	 * Get all tasks planned for today from a GET request
+	 * @return A list of tasks planned for current date
+	 */
+	public List<Task> getToday() {
+		return repository.findTaskToday();
+	}
+	
+	/**
+	 * Get a list of tasks planned within a week from a GET request
+	 * @return A list os tasks planned for incoming week
+	 */
+	public List<Task> getWeek() {
+		Calendar date = Calendar.getInstance();
+		date.add(Calendar.DATE, 6);
+		Date postDate = (Date) date.getTime();
+		return repository.findTaskByWeek(postDate);
+	}
+	
 }
