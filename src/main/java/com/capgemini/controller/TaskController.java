@@ -60,7 +60,7 @@ public class TaskController {
 	}
 	
 	/**
-	 * Detele a determined task from a DELETE request
+	 * Delete a determined task from a DELETE request
 	 * @param id Id of task to be deleted
 	 * @return HTTP response with OK status
 	 * @throws ResourceNotFoundException Exception in case task do not exist
