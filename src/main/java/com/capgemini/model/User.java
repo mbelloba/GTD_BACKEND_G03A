@@ -32,7 +32,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
 	private String email;
-	@ColumnDefault("False")
+	
 	private boolean isAdmin;
 	private String login;
 	private String password;
