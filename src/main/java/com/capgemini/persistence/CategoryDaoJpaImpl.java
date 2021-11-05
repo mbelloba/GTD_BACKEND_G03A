@@ -1,42 +1,35 @@
 package com.capgemini.persistence;
 
 import java.util.List;
+import java.util.Optional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.capgemini.model.Category;
+import com.capgemini.service.CategoryService;
 
 /**
  * Implementation of Category DAO Interface
  * @author gtd-g03
  *
  */
-@Repository("categoryDaoImpl")
+@Service
 @Transactional
-public class CategoryDaoJpaImpl implements CategoryDao {
+public class CategoryDaoJpaImpl implements CategoryService {
 	
-	private EntityManager entityManager;
+	@Autowired
+	private CategoryRepository categoryRepository;
 	
-	/**
-	 * Establish manager for entity operations
-	 * @param entityManager
-	 */
-	@PersistenceContext
-	public void setEntityManager(EntityManager entityManager) {
-		this.entityManager = entityManager;
-	}
-
 	/**
 	 * Add new Category to DB
 	 * @param category Category to be added
 	 */
 	@Override
-	public void add(Category category) {
-		entityManager.persist(category);
+	public Category add(Category category) {
+		return categoryRepository.save(category);
 	}
 
 	/**
@@ -46,18 +39,34 @@ public class CategoryDaoJpaImpl implements CategoryDao {
 	 */
 	@Override
 	public Category findById(Long id) {
-		return entityManager.find(Category.class, id);
+		Optional<Category> subOptional = categoryRepository.findById(id);
+		return subOptional.isPresent()?subOptional.get():null;
 	}
 
 	/**
 	 * Get a list of all Category entities from the DataStore
 	 * @return List od Categories
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Category> findAll() {
-		String query = "from Category";
-		return entityManager.createQuery(query).getResultList();
+		return categoryRepository.findAll();
+	}
+
+	
+	public void deleteById(Long id) {
+		Optional<Category> category = categoryRepository.findById(id);
+		if (category.isPresent()) {
+			categoryRepository.deleteById(id);
+		}
+		
+	}
+
+	@Override
+	public Category updateById(Long id, Category category) {
+		if(categoryRepository.existsById(id)) {
+			categoryRepository.save(category);
+		}
+		return category;	
 	}
 
 }
