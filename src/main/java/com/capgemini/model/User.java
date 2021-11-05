@@ -36,11 +36,13 @@ public class User {
 	private boolean isAdmin;
 	private String login;
 	private String password;
+	
 	@Enumerated(EnumType.STRING)
 	private UserStatus status = UserStatus.ENABLED;
+	
 	@ManyToMany(cascade= {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	@JoinColumn(name="groupId")
-	List<UsersGroup> usersGroup;
+	private List<UsersGroup> usersGroup;
 
 	@OneToMany(cascade= {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	@JoinColumn(name="id")

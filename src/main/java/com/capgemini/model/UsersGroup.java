@@ -17,7 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="groups")
+@Table(name="usersgroups")
 public class UsersGroup {
 
 
@@ -26,14 +26,27 @@ public class UsersGroup {
 	public Long groupId;
 	public String name;
 	public String descripction;
+	
 	@ManyToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
-	@JoinColumn(name="userId")
+	@JoinColumn(name="adminId")
 	public User admin;
 	public Date creationDate;
+	
 	@ManyToMany(cascade= {CascadeType.MERGE,CascadeType.PERSIST})
 	@JoinColumn(name="userId")
 	public List<User> users;
+	
+	@OneToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+	@JoinColumn(name="id")
+	public List<Task> tasks;
 
+	
+	
+	
+	
+	
+	
+	
 	public Long getId() {
 		return groupId;
 	}

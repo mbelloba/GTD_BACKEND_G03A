@@ -27,7 +27,6 @@ public class Task {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
 	private String title;
 	private String comments;
 	private Date created;
@@ -35,12 +34,17 @@ public class Task {
 	private boolean finished;
 	
 	@ManyToMany(cascade= {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-	@JoinColumn(name = "userId")
+	@JoinColumn(name = "id")
 	private List<User> users;
 	
 	
+	@ManyToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+	@JoinColumn(name="groupId")
+	private UsersGroup usergroups;
+	
+	
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "category_id")
+	@JoinColumn(name = "categoryId")
 	private Category category;
 	
 	/**
