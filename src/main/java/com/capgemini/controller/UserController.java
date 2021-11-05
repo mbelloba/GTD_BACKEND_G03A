@@ -21,21 +21,21 @@ import com.capgemini.model.User;
 import com.capgemini.service.UserService;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
 
 	@Autowired
 	private UserService service;
 
-	@PostMapping("/add")
+	@PostMapping("/")
 	public ResponseEntity<?> save(@RequestBody User user, Principal principal){
 		service.create(user);
 		return new ResponseEntity<>(service.create(user),HttpStatus.OK);
 
 	}
 
-	@GetMapping("/all")
+	@GetMapping("/")
 	public ResponseEntity<?> findAll(Principal pricipal){
 		return new ResponseEntity<>(service.list() ,HttpStatus.OK);
 
@@ -54,12 +54,27 @@ public class UserController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	@PutMapping("/{id}")
+	public User updateUser(@RequestBody User newUser, @PathVariable Long id) {
+		return service.get(id)
+				.map(user -> {
+					user.setEmail(newUser.getEmail());
+					user.setLogin(newUser.getLogin());
+					user.setPassword(newUser.getPassword());
+					return service.create(user);
+				})
+				.orElseGet(() -> {
+					newUser.setId(id);
+					return service.create(newUser);
+				});
+	}
 
-	
+
+
 	@PostMapping("/login")
 	public ApiResponse login(@RequestBody User user){
 		return service.login(user);
 	}
-    
+
 
 }
