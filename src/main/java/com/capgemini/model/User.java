@@ -39,9 +39,6 @@ public class User {
 	private boolean isAdmin;
 	private String login;
 	private String password;
-	@OneToMany(targetEntity= UsersGroup.class,cascade= {CascadeType.MERGE,CascadeType.PERSIST})
-	@JoinColumn(name="id")
-	private Long groupId;
 	@Enumerated(EnumType.STRING)
 	private UserStatus status = UserStatus.ENABLED;
 	

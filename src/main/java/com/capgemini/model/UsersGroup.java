@@ -22,7 +22,7 @@ import javax.persistence.Table;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 @Entity
-@Table(name="user_group")
+@Table(name="groups")
 @RestResource(rel="userGroups", path="userGroup")
 public class UsersGroup {
 
