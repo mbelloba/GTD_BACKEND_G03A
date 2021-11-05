@@ -1,6 +1,7 @@
 package com.capgemini.model;
 
 import java.sql.Date;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,13 +12,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.data.rest.core.annotation.RestResource;
+
 /**
- * Class that specifies Task properties
- * @author gtd-g03
+ * This class provides the model for Task entity. This model is mapped to 'task' table in DB. 
+ * @author GTD-G03A
  *
  */
 @Entity
-@Table(name = "TTASKS")
+@Table(name="task")
+@RestResource(rel="tasks", path="task")
 public class Task {
 	
 	@Id
@@ -38,8 +42,21 @@ public class Task {
 	@JoinColumn(name = "category_id")
 	private Category category;
 	
-		public Task() { }
+	/**
+	 * No args constructor
+	 */
+	public Task() { }
 
+	/**
+	 * All args constructor
+	 * @param title Title of taks
+	 * @param comments Comments made to taks
+	 * @param created Date of task creation
+	 * @param planned Planned date to finish task
+	 * @param finished Boolean flag to indicate if task is done or not
+	 * @param user Users assigned to task
+	 * @param category Category where task is assigned
+	 */
 	public Task(String title, String comments, Date created, Date planned, boolean finished, User user, Category category) {
 		this.comments = comments;
 		this.created = created;
@@ -112,5 +129,27 @@ public class Task {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(category, comments, created, finished, id, planned, title, user);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Task other = (Task) obj;
+		return Objects.equals(category, other.category) && Objects.equals(comments, other.comments)
+				&& Objects.equals(created, other.created) && finished == other.finished && Objects.equals(id, other.id)
+				&& Objects.equals(planned, other.planned) && Objects.equals(title, other.title)
+				&& Objects.equals(user, other.user);
+	}
+	
+	
 	
 }
