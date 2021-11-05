@@ -1,6 +1,7 @@
 package com.capgemini.model;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -19,7 +21,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name="task")
+@Table(name="tasks")
 public class Task {
 	
 	@Id
@@ -32,9 +34,10 @@ public class Task {
 	private Date planned;
 	private boolean finished;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_id")
-	private User user;
+	@ManyToMany(cascade= {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+	@JoinColumn(name = "userId")
+	private List<User> users;
+	
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "category_id")
@@ -55,17 +58,23 @@ public class Task {
 	 * @param user Users assigned to task
 	 * @param category Category where task is assigned
 	 */
-	public Task(String title, String comments, Date created, Date planned, boolean finished, User user, Category category) {
+	
+
+	public Long getId() {
+		return id;
+	}
+
+	public Task(Long id, String title, String comments, Date created, Date planned, boolean finished, List<User> users,
+			Category category) {
+		super();
+		this.id = id;
+		this.title = title;
 		this.comments = comments;
 		this.created = created;
 		this.planned = planned;
 		this.finished = finished;
-		this.user = user;
+		this.users = users;
 		this.category = category;
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public void setId(Long id) {
@@ -112,12 +121,14 @@ public class Task {
 		this.finished = finished;
 	}
 
-	public User getUser() {
-		return user;
+	
+
+	public List<User> getUsers() {
+		return users;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 
 	public Category getCategory() {
@@ -130,7 +141,7 @@ public class Task {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(category, comments, created, finished, id, planned, title, user);
+		return Objects.hash(category, comments, created, finished, id, planned, title, users);
 	}
 
 	@Override
@@ -145,7 +156,7 @@ public class Task {
 		return Objects.equals(category, other.category) && Objects.equals(comments, other.comments)
 				&& Objects.equals(created, other.created) && finished == other.finished && Objects.equals(id, other.id)
 				&& Objects.equals(planned, other.planned) && Objects.equals(title, other.title)
-				&& Objects.equals(user, other.user);
+				&& Objects.equals(users, other.users);
 	}
 	
 	

@@ -31,23 +31,26 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
-	
 	private String email;
-	
 	@ColumnDefault("False")
 	private boolean isAdmin;
 	private String login;
 	private String password;
 	@Enumerated(EnumType.STRING)
 	private UserStatus status = UserStatus.ENABLED;
-	@ManyToMany(cascade= {CascadeType.MERGE,CascadeType.PERSIST})
+	@ManyToMany(cascade= {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	@JoinColumn(name="groupId")
 	List<UsersGroup> UsersGroup;
-	
-	//@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	//private List<Task> tasks;
+
+	@OneToMany(cascade= {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+	@JoinColumn(name="id")
+	private List<Task> tasks;
+
+
+
+
 	public User() {	}
-	
+
 	public User(String email, boolean isAdmin, String login, String password, UserStatus status) {
 		this.email = email;
 		this.isAdmin = isAdmin;
@@ -55,7 +58,7 @@ public class User {
 		this.password = password;
 		this.status = status;
 	}
-	
+
 	public Long getId() {
 		return userId;
 	}
@@ -95,7 +98,7 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	public UserStatus getStatus() {
 		return status;
 	}
@@ -103,7 +106,7 @@ public class User {
 	public void setStatus(UserStatus status) {
 		this.status = status;
 	}
-	
+
 
 	@Override
 	public int hashCode() {
@@ -122,7 +125,7 @@ public class User {
 		return Objects.equals(email, other.email)
 				&& Objects.equals(userId, other.userId) && isAdmin == other.isAdmin && Objects.equals(login, other.login)
 				&& Objects.equals(password, other.password) && Objects.equals(status, other.status);
-				
+
 	}
 
 	@Override
@@ -130,9 +133,9 @@ public class User {
 		return "User [id=" + userId + ", email=" + email + ", isAdmin=" + isAdmin + ", login=" + login + ", password="
 				+ password + ", status=" + status + ", ]";
 	}
-	
-	
 
 
-		
+
+
+
 }
