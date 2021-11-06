@@ -14,13 +14,14 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+
 /**
  * This class provides the model for Task entity. This model is mapped to 'task' table in DB. 
  * @author GTD-G03A
  *
  */
 @Entity
-@Table(name="tasks")
+@Table(name="task")
 public class Task {
 	
 	@Id
@@ -49,9 +50,7 @@ public class Task {
 	/**
 	 * No args constructor
 	 */
-	public Task() { 
-		category.setId(1L);
-	}
+	public Task() { }
 
 	/**
 	 * All args constructor
@@ -63,12 +62,6 @@ public class Task {
 	 * @param user Users assigned to task
 	 * @param category Category where task is assigned
 	 */
-	
-
-	public Long getId() {
-		return id;
-	}
-
 	public Task(Long id, String title, String comments, Date created, Date planned, boolean finished, List<User> users,
 			Category category) {
 		super();
@@ -82,6 +75,10 @@ public class Task {
 		this.category = category;
 	}
 
+	public Long getId() {
+		return id;
+	}
+	
 	public void setId(Long id) {
 		this.id = id;
 	}

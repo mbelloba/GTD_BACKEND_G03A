@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CategoryDTO implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	@JsonProperty("id")
 	public Long id;
 	@JsonProperty("name")
@@ -22,17 +23,17 @@ public class CategoryDTO implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
 	public void setTasks(List<Task> tasks) {
 		this.tasks = tasks;
 	}
-	
-	
-	
 
 }

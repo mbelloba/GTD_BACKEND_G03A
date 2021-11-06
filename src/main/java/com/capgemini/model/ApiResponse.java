@@ -1,11 +1,17 @@
 package com.capgemini.model;
 
+/**
+ * This class provides the model for ApiResponse to a user login
+ * @author GTD-G03A
+ *
+ */
 public class ApiResponse {
 
     private int status;
     private String message;
     private Object result;
-
+    
+    
     public ApiResponse(int status, String message, User result){
         this.status = status;
         this.message = message;
@@ -36,5 +42,4 @@ public class ApiResponse {
 		this.status = status;
 	}
     
-
 }

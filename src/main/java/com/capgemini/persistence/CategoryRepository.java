@@ -6,7 +6,7 @@ import com.capgemini.model.Category;
 
 /**
  * Category repository that extends of JpaRepository
- * Implements custom queries over datastore
+ * Implements custom queries over data store
  * @author GTD-G03A
  *
  */

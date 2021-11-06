@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TaskDTO implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	@JsonProperty("id")
 	public Long id;
 	@JsonProperty("tittle")
@@ -66,6 +67,4 @@ public class TaskDTO implements Serializable {
 		this.category = category;
 	}
 	
-	
-
 }

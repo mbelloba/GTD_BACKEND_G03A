@@ -14,7 +14,7 @@ import com.capgemini.model.Task;
 
 /**
  * Task repository that extends of JpaRepository
- * Implements custom queries over datastore
+ * Implements custom queries over data store
  * @author GTD-G03A
  *
  */
@@ -57,7 +57,7 @@ public interface TaskRepository extends JpaRepository<Task, Long>, CrudRepositor
 	 */
 	@Query("SELECT t FROM Task AS t WHERE t.id = ?1")
 	Task findTaskById(Long id);
-	
+		
 	/**
 	 * Delete a task from DataStore
 	 * @param id Id of task to erase

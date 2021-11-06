@@ -1,5 +1,10 @@
 package com.capgemini.controller;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -13,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.capgemini.model.Category;
 import com.capgemini.model.Task;
+import com.capgemini.service.CategoryService;
 import com.capgemini.service.TaskService;
 
 /**
@@ -28,11 +35,14 @@ public class TaskController {
 	@Autowired
 	private TaskService service;
 	
+	@Autowired 
+	CategoryService catService;
+	
 	/**
 	 * Gets all tasks of repository from a GET request
-	 * @return HTTP response with all tasks in body, and OK http status
+	 * @return HTTP response with all tasks in body, and OK HTTP status
 	 */
-	@GetMapping("/")
+	@GetMapping
 	public ResponseEntity<?> findAll() {
 		return new ResponseEntity<>(service.list(), HttpStatus.OK);
 	}
@@ -40,9 +50,9 @@ public class TaskController {
 	/**
 	 * Create a new task in repository from POST request
 	 * @param task Task to be created
-	 * @return HTTP response with task created in body, and ok http status
+	 * @return HTTP response with task created in body, and OK HTTP status
 	 */
-	@PostMapping("/")
+	@PostMapping
 	public ResponseEntity<?> save(@RequestBody Task task) {
 		return new ResponseEntity<>(service.create(task), HttpStatus.OK);		
 	}
@@ -96,30 +106,47 @@ public class TaskController {
 	}
 	
 	/**
-	 * Get all tasks from inbox category from a GET request
-	 * @return A list of tasks with inbox category
+	 * Get the list of tasks in inbox category from a GET request
+	 * @return List of tasks in inbox category
 	 */
 	@GetMapping("/inbox")
 	public ResponseEntity<?> getInbox() {
-		return new ResponseEntity<>(service.getInbox(), HttpStatus.OK);
+		return new ResponseEntity<>(service.listInbox(), HttpStatus.OK);
 	}
 	
 	/**
-	 * Get all tasks planned for today from a GET request
-	 * @return A list of tasks planned for current date
+	 * Get the list of tasks planned for current date from a GET request
+	 * @return HTTP response with all tasks planned for today in body, and OK HTTP status
 	 */
 	@GetMapping("/today")
 	public ResponseEntity<?> getToday() {
-		return new ResponseEntity<>(service.getToday(), HttpStatus.OK);
+		return new ResponseEntity<>(service.listToday(), HttpStatus.OK);
 	}
 	
 	/**
-	 * Get a list of tasks planned within a week from a GET request
-	 * @return A list os tasks planned for incoming week
+	 * Get the list of tasks planned within a week from a GET request
+	 * @return HTTP response with all tasks planned within a week, and a OK HTTP status 
 	 */
 	@GetMapping("/week")
 	public ResponseEntity<?> getWeek() {
-		return new ResponseEntity<>(service.getWeek(), HttpStatus.OK);
+		Calendar date = Calendar.getInstance();
+		date.add(Calendar.DATE, 6);
+		Date postDate = (Date) date.getTime();
+		return new ResponseEntity<>(service.listWeek(postDate), HttpStatus.OK);
+	}
+	
+	/**
+	 * Get a list of tasks list grouped by category from a GET request
+	 * @return A list of tasks list grouped by category
+	 */
+	@GetMapping("/categories")
+	public ResponseEntity<?> getListByCategories() {
+		List<Category> categories = catService.list();
+		List<List<Task>> tasks = new ArrayList<List<Task>>();
+		for (Category category : categories) {
+			tasks.add(service.listByCategory(category.getId()));
+		}
+		return new ResponseEntity<List<?>>(tasks, HttpStatus.OK);
 	}
 
 }

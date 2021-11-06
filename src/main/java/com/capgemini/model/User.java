@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -16,16 +15,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.rest.core.annotation.RestResource;
-
 /**
- * Class that specifies User properties
- * @author gtd-g03
+ * This class provides the model for User entity. This model is mapped to 'user' table in DB. 
+ * @author GTD-G03A
  *
  */
 @Entity
-@Table(name="users")
+@Table(name="user")
 public class User {
 
 	@Id
@@ -48,11 +44,19 @@ public class User {
 	@JoinColumn(name="id")
 	private List<Task> tasks;
 
-
-
-
+	/**
+	 * No args constructor
+	 */
 	public User() {	}
 
+	/**
+	 * All args constructor
+	 * @param email Email of user
+	 * @param isAdmin Boolean flag to set if user is admin or not
+	 * @param login unique user name in app
+	 * @param password Password for user account
+	 * @param status Field to indicate if user account is enabled or disabled
+	 */
 	public User(String email, boolean isAdmin, String login, String password, UserStatus status) {
 		this.email = email;
 		this.isAdmin = isAdmin;

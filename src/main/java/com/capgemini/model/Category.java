@@ -100,6 +100,4 @@ public class Category {
 				&& Objects.equals(user, other.user) && Objects.equals(tasks, other.tasks);
 	}
 	
-
-
 }

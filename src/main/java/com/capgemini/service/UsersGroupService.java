@@ -6,11 +6,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.capgemini.model.User;
 import com.capgemini.model.UsersGroup;
-import com.capgemini.persistence.UserRepository;
 import com.capgemini.persistence.UsersGroupRepository;
 
+/**
+ * Service that use users group repository
+ * @author GTD-G03A
+ * 
+ */
 @Service
 public class UsersGroupService {
 	
@@ -18,38 +21,35 @@ public class UsersGroupService {
 	private UsersGroupRepository repository;
 	
 	/**
-	 * 
-	 * @param id
-	 * @return user by id
+	 * Get a users group from repository
+	 * @param id Id to search users group
+	 * @return UsersGroup found by Id in an Optional container
 	 */
-	
 	public Optional<UsersGroup> get(Long id) {
 		return repository.findById(id);
 	}
 	
 	/**
-	 * 
-	 * @return all users in database
+	 * Get the list of users groups from repository
+	 * @return All users groups in a List collection
 	 */
-
 	public List<UsersGroup> list() {
 		List<UsersGroup> groups = (List<UsersGroup>) repository.findAll(); 
 		return groups;
 	}
 	
 	/**
-	 * 
-	 * @param user
-	 * @return Create user in database
+	 * Create a new users group in repository
+	 * @param group New users group to save in repository
+	 * @return UsersGroup created
 	 */
-
 	public UsersGroup create(UsersGroup group) {
 		return repository.save(group);
 	}
 
 	/**
-	 * 
-	 * @param id, delete by ID
+	 * Delete a users group 
+	 * @param id Id of users group to delete
 	 */
 	public void deleteById (Long id) {
 		repository.deleteById(id);

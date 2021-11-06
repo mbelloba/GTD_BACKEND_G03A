@@ -1,7 +1,6 @@
 package com.capgemini.service;
 
-import java.sql.Date;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +20,7 @@ public class TaskService {
 	
 	@Autowired
 	private TaskRepository repository;
+	
 	
 	/**
 	 * Get a task from repository
@@ -57,30 +57,36 @@ public class TaskService {
 	}
 	
 	/**
-	 * Get all tasks from inbox category from a GET request
-	 * @return A list of tasks with inbox category
+	 * Get the list of task from inbox category (we assume id category is 1)
+	 * @return The list of task in inbox category
 	 */
-	public List<Task> getInbox() {
+	public List<Task> listInbox() {
 		return repository.findTaskByCategoryId(1L);
 	}
 	
 	/**
-	 * Get all tasks planned for today from a GET request
-	 * @return A list of tasks planned for current date
+	 * Get the list of tasks which planned date is the current date
+	 * @return List of tasks planned for today
 	 */
-	public List<Task> getToday() {
+	public List<Task> listToday() {
 		return repository.findTaskToday();
 	}
 	
 	/**
-	 * Get a list of tasks planned within a week from a GET request
-	 * @return A list os tasks planned for incoming week
+	 * Get the list of tasks which planned date it´s within a week
+	 * @param postDate Date until tasks have to be listed 
+	 * @return List of tasks with date criteria
 	 */
-	public List<Task> getWeek() {
-		Calendar date = Calendar.getInstance();
-		date.add(Calendar.DATE, 6);
-		Date postDate = (Date) date.getTime();
+	public List<Task> listWeek(Date postDate) {
 		return repository.findTaskByWeek(postDate);
 	}
 	
+	/**
+	 * Get a list of tasks in a category
+	 * @param id Id of category 
+	 * @return List of tasks in category
+	 */
+	public List<Task> listByCategory(Long id) {
+		return repository.findTaskByCategoryId(id);
+	}
 }

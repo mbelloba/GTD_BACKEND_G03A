@@ -13,11 +13,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+/**
+ * This class provides the model for Users group entity. This model is mapped to 'usersgroup' table in DB. 
+ * @author GTD-G03A
+ *
+ */
 @Entity
-@Table(name="usersgroups")
+@Table(name="usersgroup")
 public class UsersGroup {
 
 
@@ -25,7 +29,7 @@ public class UsersGroup {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long groupId;
 	public String name;
-	public String descripction;
+	public String description;
 	
 	@ManyToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
 	@JoinColumn(name="adminId")
@@ -40,13 +44,7 @@ public class UsersGroup {
 	@JoinColumn(name="id")
 	public List<Task> tasks;
 
-	
-	
-	
-	
-	
-	
-	
+		
 	public Long getId() {
 		return groupId;
 	}
@@ -59,11 +57,11 @@ public class UsersGroup {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getDescripction() {
-		return descripction;
+	public String getDescription() {
+		return description;
 	}
-	public void setDescripction(String descripction) {
-		this.descripction = descripction;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	public User getAdmin() {
 		return admin;
@@ -85,7 +83,7 @@ public class UsersGroup {
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(admin, creationDate, descripction, groupId, name, users);
+		return Objects.hash(admin, creationDate, description, groupId, name, users);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -97,10 +95,9 @@ public class UsersGroup {
 			return false;
 		UsersGroup other = (UsersGroup) obj;
 		return Objects.equals(admin, other.admin) && Objects.equals(creationDate, other.creationDate)
-				&& Objects.equals(descripction, other.descripction) && Objects.equals(groupId, other.groupId)
+				&& Objects.equals(description, other.description) && Objects.equals(groupId, other.groupId)
 				&& Objects.equals(name, other.name) && Objects.equals(users, other.users);
 	}
-
 
 
 }

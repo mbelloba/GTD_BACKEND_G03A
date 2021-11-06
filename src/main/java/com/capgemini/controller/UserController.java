@@ -16,10 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.model.ApiResponse;
-import com.capgemini.model.LoginDto;
 import com.capgemini.model.User;
 import com.capgemini.service.UserService;
 
+/**
+ * Class controller to process all incoming requests relative to users
+ * @author GTD-G03A
+ *
+ */
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -28,32 +32,60 @@ public class UserController {
 	@Autowired
 	private UserService service;
 
-	@PostMapping("/")
-	public ResponseEntity<?> save(@RequestBody User user, Principal principal){
+	/**
+	 * Gets all users of repository from a GET request
+	 * @return HTTP response with all users in body, and OK HTTP status
+	 */
+	@GetMapping
+	public ResponseEntity<?> findAll(Principal pricipal){
+		return new ResponseEntity<>(service.list() ,HttpStatus.OK);
+
+	}
+	
+	/**
+	 * Create a new user in repository from POST request
+	 * @param user User to be created
+	 * @return HTTP response with user created in body, and OK HTTP status
+	 */
+	@PostMapping
+	public ResponseEntity<?> save(@RequestBody User user){
 		service.create(user);
 		return new ResponseEntity<>(service.create(user),HttpStatus.OK);
 
 	}
 
-	@GetMapping("/")
-	public ResponseEntity<?> findAll(Principal pricipal){
-		return new ResponseEntity<>(service.list() ,HttpStatus.OK);
-
-	}
-
+	/**
+	 * Get a determined user from a GET request
+	 * @param id Id of user to be retrieved 
+	 * @return HTTP response with user found in repository
+	 * @throws ResourceNotFoundException Exception in case user do not exist
+	 */
 	@GetMapping("/{id}")
 	public ResponseEntity<User> getUser(@PathVariable(name = "id") Long id) throws ResourceNotFoundException {
 		User user = service.get(id).orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 		return ResponseEntity.ok().body(user);
 	}
 
+	/**
+	 * Delete a determined user from a DELETE request
+	 * @param id Id of user to be deleted
+	 * @return HTTP response with OK status
+	 * @throws ResourceNotFoundException Exception in case user do not exist
+	 */
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteById(@PathVariable Long id, Principal principal){
-		User user = service.get(id).orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+	public ResponseEntity<?> deleteById(@PathVariable Long id){
+		service.get(id).orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 		service.deleteById(id); 
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	/**
+	 * Update (or create) a user a from a PUT request
+	 * @param id Id of user to be updated/created
+	 * @param userDetails User object with updated properties
+	 * @return HTTP response with updated user
+	 * @throws ResourceNotFoundException Exception in case user do not exist
+	 */
 	@PutMapping("/{id}")
 	public User updateUser(@RequestBody User newUser, @PathVariable Long id) {
 		return service.get(id)
@@ -69,8 +101,11 @@ public class UserController {
 				});
 	}
 
-
-
+	/**
+	 * Method to login to App
+	 * @param user User credentials to login
+	 * @return ApiResponse with result of login process
+	 */
 	@PostMapping("/login")
 	public ApiResponse login(@RequestBody User user){
 		return service.login(user);
