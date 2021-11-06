@@ -88,7 +88,7 @@ public class TaskController {
 		task.setCreated(taskDetails.getCreated());
 		task.setPlanned(taskDetails.getPlanned());
 		task.setFinished(taskDetails.getFinished());
-		task.setUser(taskDetails.getUser());
+		task.setUsers(taskDetails.getUsers());
 		task.setCategory(taskDetails.getCategory());
 		
 		final Task updatedTask = service.create(task);
