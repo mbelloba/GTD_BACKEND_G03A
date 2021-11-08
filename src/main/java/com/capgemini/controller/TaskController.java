@@ -23,12 +23,19 @@ import com.capgemini.model.Task;
 import com.capgemini.service.CategoryService;
 import com.capgemini.service.TaskService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 /**
  * Class controller to process all incoming requests relative to tasks
  * @author GTD-G03A
  *
  */
 @RestController
+@Tag(name="Task")
 @RequestMapping("/task")
 public class TaskController {
 	
@@ -43,6 +50,12 @@ public class TaskController {
 	 * @return HTTP response with all tasks in body, and OK HTTP status
 	 */
 	@GetMapping
+	@Operation(summary="Get all tasks")
+	@ApiResponses(value= {
+			@ApiResponse(responseCode = "200",
+					     description = "Successfully getted all tasks",
+					     content= {@Content(mediaType = "application/json")})
+	})
 	public ResponseEntity<?> findAll() {
 		return new ResponseEntity<>(service.list(), HttpStatus.OK);
 	}
@@ -53,6 +66,12 @@ public class TaskController {
 	 * @return HTTP response with task created in body, and OK HTTP status
 	 */
 	@PostMapping
+	@Operation(summary="Save new task")
+	@ApiResponses(value= {
+			@ApiResponse(responseCode = "200",
+					     description = "Success, the task has been saved",
+					     content= {@Content(mediaType = "application/json")})
+	})
 	public ResponseEntity<?> save(@RequestBody Task task) {
 		return new ResponseEntity<>(service.create(task), HttpStatus.OK);		
 	}
@@ -64,6 +83,12 @@ public class TaskController {
 	 * @throws ResourceNotFoundException Exception in case task do not exist
 	 */
 	@GetMapping("/{id}")
+	@Operation(summary="Get a single task by id")
+	@ApiResponses(value= {
+			@ApiResponse(responseCode = "200",
+					     description = "Successfully getted the task by id",
+					     content= {@Content(mediaType = "application/json")})
+	})
 	public ResponseEntity<?> getTask(@PathVariable(name = "id") Long id) throws ResourceNotFoundException {
 		Task task = service.get(id).orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
 		return ResponseEntity.ok().body(task);
@@ -76,6 +101,12 @@ public class TaskController {
 	 * @throws ResourceNotFoundException Exception in case task do not exist
 	 */
 	@DeleteMapping("/{id}")
+	@Operation(summary="Delete a task by id")
+	@ApiResponses(value= {
+			@ApiResponse(responseCode = "200",
+					     description = "Success, the task has been deleted",
+					     content= {@Content(mediaType = "application/json")})
+	})
 	public ResponseEntity<?> deleteById(@PathVariable Long id) throws ResourceNotFoundException {
 		service.get(id).orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
 		service.deleteById(id); 
@@ -90,6 +121,12 @@ public class TaskController {
 	 * @throws ResourceNotFoundException Exception in case task do not exist
 	 */
 	@PutMapping("/{id}")
+	@Operation(summary="Update a task by id")
+	@ApiResponses(value= {
+			@ApiResponse(responseCode = "200",
+					     description = "Success, the task has been updated",
+					     content= {@Content(mediaType = "application/json")})
+	})
 	public ResponseEntity<?> updateTask(@PathVariable(name = "id") Long id, @RequestBody Task taskDetails) throws ResourceNotFoundException {
 		Task task = service.get(id).orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
 
@@ -110,6 +147,12 @@ public class TaskController {
 	 * @return List of tasks in inbox category
 	 */
 	@GetMapping("/inbox")
+	@Operation(summary="Get tasks in inbox category")
+	@ApiResponses(value= {
+			@ApiResponse(responseCode = "200",
+					     description = "Successfully getted the tasks in inbox category",
+					     content= {@Content(mediaType = "application/json")})
+	})
 	public ResponseEntity<?> getInbox() {
 		return new ResponseEntity<>(service.listInbox(), HttpStatus.OK);
 	}
@@ -119,6 +162,12 @@ public class TaskController {
 	 * @return HTTP response with all tasks planned for today in body, and OK HTTP status
 	 */
 	@GetMapping("/today")
+	@Operation(summary="Get tasks planned for current date")
+	@ApiResponses(value= {
+			@ApiResponse(responseCode = "200",
+					     description = "Successfully getted the tasks planned for today",
+					     content= {@Content(mediaType = "application/json")})
+	})
 	public ResponseEntity<?> getToday() {
 		return new ResponseEntity<>(service.listToday(), HttpStatus.OK);
 	}
@@ -128,6 +177,12 @@ public class TaskController {
 	 * @return HTTP response with all tasks planned within a week, and a OK HTTP status 
 	 */
 	@GetMapping("/week")
+	@Operation(summary="Get tasks planned within a week")
+	@ApiResponses(value= {
+			@ApiResponse(responseCode = "200",
+					     description = "Successfully getted the tasks planned within a week",
+					     content= {@Content(mediaType = "application/json")})
+	})
 	public ResponseEntity<?> getWeek() {
 		Calendar date = Calendar.getInstance();
 		date.add(Calendar.DATE, 6);
@@ -140,6 +195,12 @@ public class TaskController {
 	 * @return A list of tasks list grouped by category
 	 */
 	@GetMapping("/categories")
+	@Operation(summary="Get tasks listed by category")
+	@ApiResponses(value= {
+			@ApiResponse(responseCode = "200",
+					     description = "Successfully getted the tasks listed by category",
+					     content= {@Content(mediaType = "application/json")})
+	})
 	public ResponseEntity<?> getListByCategories() {
 		List<Category> categories = catService.list();
 		List<List<Task>> tasks = new ArrayList<List<Task>>();

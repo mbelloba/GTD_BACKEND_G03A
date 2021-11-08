@@ -15,9 +15,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.capgemini.model.ApiResponse;
 import com.capgemini.model.User;
 import com.capgemini.service.UserService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * Class controller to process all incoming requests relative to users
@@ -25,6 +30,7 @@ import com.capgemini.service.UserService;
  *
  */
 @RestController
+@Tag(name="User")
 @RequestMapping("/user")
 public class UserController {
 
@@ -37,6 +43,12 @@ public class UserController {
 	 * @return HTTP response with all users in body, and OK HTTP status
 	 */
 	@GetMapping
+	@Operation(summary="Get all users")
+	@ApiResponses(value= {
+			@ApiResponse(responseCode = "200",
+					     description = "Successfully getted all users",
+					     content= {@Content(mediaType = "application/json")})
+	})
 	public ResponseEntity<?> findAll(Principal pricipal){
 		return new ResponseEntity<>(service.list() ,HttpStatus.OK);
 
@@ -48,6 +60,12 @@ public class UserController {
 	 * @return HTTP response with user created in body, and OK HTTP status
 	 */
 	@PostMapping
+	@Operation(summary="Save new user")
+	@ApiResponses(value= {
+			@ApiResponse(responseCode = "200",
+					     description = "Success, the user has been saved",
+					     content= {@Content(mediaType = "application/json")})
+	})
 	public ResponseEntity<?> save(@RequestBody User user){
 		service.create(user);
 		return new ResponseEntity<>(service.create(user),HttpStatus.OK);
@@ -61,6 +79,12 @@ public class UserController {
 	 * @throws ResourceNotFoundException Exception in case user do not exist
 	 */
 	@GetMapping("/{id}")
+	@Operation(summary="Get a single user by id")
+	@ApiResponses(value= {
+			@ApiResponse(responseCode = "200",
+					     description = "Successfully getted the user by id",
+					     content= {@Content(mediaType = "application/json")})
+	})
 	public ResponseEntity<User> getUser(@PathVariable(name = "id") Long id) throws ResourceNotFoundException {
 		User user = service.get(id).orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 		return ResponseEntity.ok().body(user);
@@ -73,6 +97,12 @@ public class UserController {
 	 * @throws ResourceNotFoundException Exception in case user do not exist
 	 */
 	@DeleteMapping("/{id}")
+	@Operation(summary="Delete an user by id")
+	@ApiResponses(value= {
+			@ApiResponse(responseCode = "200",
+					     description = "Success, the user has been deleted",
+					     content= {@Content(mediaType = "application/json")})
+	})
 	public ResponseEntity<?> deleteById(@PathVariable Long id){
 		service.get(id).orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 		service.deleteById(id); 
@@ -87,6 +117,12 @@ public class UserController {
 	 * @throws ResourceNotFoundException Exception in case user do not exist
 	 */
 	@PutMapping("/{id}")
+	@Operation(summary="Update an user by id")
+	@ApiResponses(value= {
+			@ApiResponse(responseCode = "200",
+					     description = "Success, the user has been updated",
+					     content= {@Content(mediaType = "application/json")})
+	})
 	public User updateUser(@RequestBody User newUser, @PathVariable Long id) {
 		return service.get(id)
 				.map(user -> {
@@ -107,7 +143,13 @@ public class UserController {
 	 * @return ApiResponse with result of login process
 	 */
 	@PostMapping("/login")
-	public ApiResponse login(@RequestBody User user){
+	@Operation(summary="Log of an user")
+	@ApiResponses(value= {
+			@ApiResponse(responseCode = "200",
+					     description = "Success, the user has been logged",
+					     content= {@Content(mediaType = "application/json")})
+	})
+	public com.capgemini.model.ApiResponse login(@RequestBody User user){
 		return service.login(user);
 	}
 
