@@ -15,6 +15,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * This class provides the model for User entity. This model is mapped to 'user' table in DB. 
  * @author GTD-G03A
@@ -24,22 +26,58 @@ import javax.persistence.Table;
 @Table(name="user")
 public class User {
 
+	@Schema(
+			description="User unique identifier ID",
+			example = "1",
+			required = true
+		   )
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
+	
+	@Schema(
+			description="User mail",
+			example = "user@gmail.com"
+		   )
 	private String email;
 	
+	@Schema(
+			description="User admin identifier",
+			example = "true"
+		   )
 	private boolean isAdmin;
+	
+	@Schema(
+			description="User login",
+			example = "User 1"
+		   )
 	private String login;
+	
+	@Schema(
+			description="User password",
+			example = "Password123"
+		   )
 	private String password;
 	
+	@Schema(
+			description="User status",
+			example = "ENABLED"
+		   )
 	@Enumerated(EnumType.STRING)
 	private UserStatus status = UserStatus.ENABLED;
 	
+	@Schema(
+			description="User groups list",
+			example = "List of user groups..."
+		   )
 	@ManyToMany(cascade= {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	@JoinColumn(name="groupId")
 	private List<UsersGroup> usersGroup;
 
+	@Schema(
+			description="User tasks list",
+			example = "List of tasks..."
+		   )
 	@OneToMany(cascade= {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	@JoinColumn(name="id")
 	private List<Task> tasks;

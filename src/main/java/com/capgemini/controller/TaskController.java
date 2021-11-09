@@ -35,7 +35,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  *
  */
 @RestController
-@Tag(name="Task")
+@Tag(name="Task", description="Task API")
 @RequestMapping("/task")
 public class TaskController {
 	
@@ -54,7 +54,13 @@ public class TaskController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Successfully getted all tasks",
-					     content= {@Content(mediaType = "application/json")})
+					     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "404",
+		     description = "Task not found",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> findAll() {
 		return new ResponseEntity<>(service.list(), HttpStatus.OK);
@@ -70,7 +76,10 @@ public class TaskController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Success, the task has been saved",
-					     content= {@Content(mediaType = "application/json")})
+					     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> save(@RequestBody Task task) {
 		return new ResponseEntity<>(service.create(task), HttpStatus.OK);		
@@ -87,7 +96,13 @@ public class TaskController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Successfully getted the task by id",
-					     content= {@Content(mediaType = "application/json")})
+					     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "404",
+		     description = "Task not found",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> getTask(@PathVariable(name = "id") Long id) throws ResourceNotFoundException {
 		Task task = service.get(id).orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
@@ -105,7 +120,13 @@ public class TaskController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Success, the task has been deleted",
-					     content= {@Content(mediaType = "application/json")})
+					     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "404",
+		     description = "Task not found",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> deleteById(@PathVariable Long id) throws ResourceNotFoundException {
 		service.get(id).orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
@@ -125,7 +146,13 @@ public class TaskController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Success, the task has been updated",
-					     content= {@Content(mediaType = "application/json")})
+					     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "404",
+		     description = "Task not found",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> updateTask(@PathVariable(name = "id") Long id, @RequestBody Task taskDetails) throws ResourceNotFoundException {
 		Task task = service.get(id).orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
@@ -151,7 +178,13 @@ public class TaskController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Successfully getted the tasks in inbox category",
-					     content= {@Content(mediaType = "application/json")})
+					     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "404",
+		     description = "Task not found",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> getInbox() {
 		return new ResponseEntity<>(service.listInbox(), HttpStatus.OK);
@@ -166,7 +199,13 @@ public class TaskController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Successfully getted the tasks planned for today",
-					     content= {@Content(mediaType = "application/json")})
+					     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "404",
+		     description = "Task not found",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> getToday() {
 		return new ResponseEntity<>(service.listToday(), HttpStatus.OK);
@@ -181,7 +220,13 @@ public class TaskController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Successfully getted the tasks planned within a week",
-					     content= {@Content(mediaType = "application/json")})
+					     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "404",
+		     description = "Task not found",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> getWeek() {
 		Calendar date = Calendar.getInstance();
@@ -199,7 +244,13 @@ public class TaskController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Successfully getted the tasks listed by category",
-					     content= {@Content(mediaType = "application/json")})
+					     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "404",
+		     description = "Task not found",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> getListByCategories() {
 		List<Category> categories = catService.list();
