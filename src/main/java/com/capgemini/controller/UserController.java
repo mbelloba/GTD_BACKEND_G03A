@@ -30,7 +30,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  *
  */
 @RestController
-@Tag(name="User")
+@Tag(name="User", description="User API")
 @RequestMapping("/user")
 public class UserController {
 
@@ -47,7 +47,13 @@ public class UserController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Successfully getted all users",
-					     content= {@Content(mediaType = "application/json")})
+					     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "404",
+		     description = "User not found",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> findAll(Principal pricipal){
 		return new ResponseEntity<>(service.list() ,HttpStatus.OK);
@@ -64,7 +70,10 @@ public class UserController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Success, the user has been saved",
-					     content= {@Content(mediaType = "application/json")})
+					     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> save(@RequestBody User user){
 		service.create(user);
@@ -83,7 +92,13 @@ public class UserController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Successfully getted the user by id",
-					     content= {@Content(mediaType = "application/json")})
+					     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "404",
+		     description = "User not found",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<User> getUser(@PathVariable(name = "id") Long id) throws ResourceNotFoundException {
 		User user = service.get(id).orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
@@ -101,7 +116,13 @@ public class UserController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Success, the user has been deleted",
-					     content= {@Content(mediaType = "application/json")})
+					     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "404",
+		     description = "User not found",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> deleteById(@PathVariable Long id){
 		service.get(id).orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
@@ -121,7 +142,13 @@ public class UserController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Success, the user has been updated",
-					     content= {@Content(mediaType = "application/json")})
+					     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "404",
+		     description = "User not found",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	public User updateUser(@RequestBody User newUser, @PathVariable Long id) {
 		return service.get(id)
@@ -147,7 +174,13 @@ public class UserController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Success, the user has been logged",
-					     content= {@Content(mediaType = "application/json")})
+					     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "404",
+		     description = "User not found",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	public com.capgemini.model.ApiResponse login(@RequestBody User user){
 		return service.login(user);

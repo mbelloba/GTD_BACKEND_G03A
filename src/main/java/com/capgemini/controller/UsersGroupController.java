@@ -27,7 +27,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  *
  */
 @Controller
-@Tag(name="User Group")
+@Tag(name="User Group", description="User Group API")
 @RequestMapping("/usersgroup")
 public class UsersGroupController {
 	
@@ -43,7 +43,13 @@ public class UsersGroupController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Successfully getted all groups of users",
-					     content= {@Content(mediaType = "application/json")})
+					     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "404",
+		     description = "UserGroup not found",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> findAll(){
 		return new ResponseEntity<>(service.list() ,HttpStatus.OK);
@@ -60,7 +66,10 @@ public class UsersGroupController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Success, the group has been saved",
-					     content= {@Content(mediaType = "application/json")})
+					     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> save(@RequestBody UsersGroup usersGroup){
 		service.create(usersGroup);
@@ -79,7 +88,13 @@ public class UsersGroupController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Successfully getted the group by id",
-					     content= {@Content(mediaType = "application/json")})
+					     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "404",
+		     description = "UserGroup not found",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<UsersGroup> getUsersGroup(@PathVariable(name = "id") Long id) throws ResourceNotFoundException {
 		UsersGroup usersGroup = service.get(id).orElseThrow(() -> new ResourceNotFoundException("Group of users not found with id: " + id));
@@ -97,7 +112,13 @@ public class UsersGroupController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Success, the group has been deleted",
-					     content= {@Content(mediaType = "application/json")})
+					     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "404",
+		     description = "UserGroup not found",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> deleteById(@PathVariable Long id){
 		service.get(id).orElseThrow(() -> new ResourceNotFoundException("Group of users not found with id: " + id));

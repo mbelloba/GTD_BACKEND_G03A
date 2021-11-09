@@ -14,6 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 
 /**
  * This class provides the model for Task entity. This model is mapped to 'task' table in DB. 
@@ -24,25 +26,66 @@ import javax.persistence.Table;
 @Table(name="task")
 public class Task {
 	
+	@Schema(
+			description="Task unique identifier id",
+			example = "1",
+			required = true
+			)
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Schema(
+			description="Task title",
+			example = "Task 1"
+			)
 	private String title;
+	
+	@Schema(
+			description="Task comment",
+			example = "This is the task comment"
+		   )
 	private String comments;
+	
+	@Schema(
+			description="Task created date",
+			example = "2021-11-09"
+		   )
 	private Date created;
+	
+	@Schema(
+			description="Task planned date",
+			example = "2021-11-10"
+		   )
 	private Date planned;
+	
+	@Schema(
+			description="Task finished",
+			example = "false"
+		   )
 	private boolean finished;
 	
+	@Schema(
+			description="Task user list",
+			example = "List of users..."
+		   )
 	@ManyToMany(cascade= {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	@JoinColumn(name = "id")
 	private List<User> users;
 	
-	
+	@Schema(
+			description="Task UserGroup",
+			example = "usergroup properties..."
+		   )
 	@ManyToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
 	@JoinColumn(name="groupId")
 	private UsersGroup usergroups;
 	
 	
+	@Schema(
+			description="Category of the task",
+			example = "1"
+		   )
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "categoryId")
 	private Category category;

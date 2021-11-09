@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 
 /**
  * This class provides the model for Category entity. This model is mapped to 'category' table in DB. 
@@ -23,16 +25,33 @@ import javax.persistence.Table;
 @Table(name="category")
 public class Category {
 	
+	@Schema(
+			description="Category unique identifier id",
+			example = "1",
+			required = true
+			)
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Schema(
+			description="Category name",
+			example = "Category 1"
+		   )
 	@Column
 	private String name;
 	
+	@Schema(
+			description="Owner of the category",
+			example = "User properties..."
+		   )
 	@ManyToOne(cascade = CascadeType.ALL)
 	private User user;
 	
+	@Schema(
+			description="Category task list",
+			example = "List of tasks..."
+		   )
 	@OneToMany(mappedBy = "category", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
 	private List<Task> tasks;
 	

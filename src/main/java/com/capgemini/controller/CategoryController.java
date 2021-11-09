@@ -28,7 +28,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  *
  */
 @RestController
-@Tag(name="Category")
+@Tag(name="Category", description="Category API")
 @RequestMapping("/category")
 public class CategoryController {
 
@@ -44,7 +44,13 @@ public class CategoryController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Successfully getted all categories",
-					     content= {@Content(mediaType = "application/json")})
+						 content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "404",
+		     description = "List of categories not found",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> findAll(){
 		return new ResponseEntity<>(service.list() ,HttpStatus.OK);
@@ -62,7 +68,13 @@ public class CategoryController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Successfully getted the category by id",
-					     content= {@Content(mediaType = "application/json")})
+					     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "404",
+		     description = "Category not found",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> getCategory(@PathVariable(name = "id") Long id) throws ResourceNotFoundException{
 		Category category = service.get(id).orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
@@ -79,7 +91,10 @@ public class CategoryController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Success, the category has been saved",
-					     content= {@Content(mediaType = "application/json")})
+					     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	public  ResponseEntity<?> save(@RequestBody Category category) {
 		return new ResponseEntity<>(service.create(category),HttpStatus.OK);
@@ -98,7 +113,13 @@ public class CategoryController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Success, the category has been deleted",
-					     content= {@Content(mediaType = "application/json")})
+					     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "404",
+		     description = "Category not found",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> deleteById(@PathVariable Long id) throws ResourceNotFoundException{
 		service.get(id).orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
@@ -118,7 +139,13 @@ public class CategoryController {
 	@ApiResponses(value= {
 			@ApiResponse(responseCode = "200",
 					     description = "Success, the category has been updated",
-					     content= {@Content(mediaType = "application/json")})
+					     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "400",
+		     description = "Bad request",
+		     content= {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "404",
+		     description = "Category not found",
+		     content= {@Content(mediaType = "application/json")})
 	})
 	@Operation(summary="Update a category by id")
 	public ResponseEntity<?> updateCategory(@PathVariable(name = "id") Long id, @RequestBody Category categoryDetails) throws ResourceNotFoundException {
