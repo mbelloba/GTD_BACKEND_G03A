@@ -1,5 +1,7 @@
 package com.capgemini.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/usersgroup")
 public class UsersGroupController {
 	
+	private static final Logger log = LoggerFactory.getLogger(UsersGroupController.class);
+	
 	@Autowired
 	private UsersGroupService service;
 	
@@ -52,7 +56,14 @@ public class UsersGroupController {
 		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> findAll(){
-		return new ResponseEntity<>(service.list() ,HttpStatus.OK);
+		log.debug("Entering get all usersgroups endpoint");
+		try {
+			log.info("UsersGroup getted");
+			return new ResponseEntity<>(service.list() ,HttpStatus.OK);
+		} catch (Exception e) {
+			log.error("Unable to get UsersGroup, message: " + e.getMessage(), e);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 
 	}
 	
@@ -72,8 +83,15 @@ public class UsersGroupController {
 		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> save(@RequestBody UsersGroup usersGroup){
-		service.create(usersGroup);
-		return new ResponseEntity<>(service.create(usersGroup),HttpStatus.OK);
+		log.debug("Entering create usersgroup endpoint");
+		try {
+			service.create(usersGroup);
+			log.info("New usersGroup created");
+			return new ResponseEntity<>(service.create(usersGroup),HttpStatus.OK);
+		} catch (Exception e) {
+			log.error("Unable to create UsersGroup, message: " + e.getMessage(), e);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 
 	}
 
@@ -97,8 +115,15 @@ public class UsersGroupController {
 		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<UsersGroup> getUsersGroup(@PathVariable(name = "id") Long id) throws ResourceNotFoundException {
-		UsersGroup usersGroup = service.get(id).orElseThrow(() -> new ResourceNotFoundException("Group of users not found with id: " + id));
-		return ResponseEntity.ok().body(usersGroup);
+		log.debug("Entering get a usersgroup by id endpoint");
+		try {
+			UsersGroup usersGroup = service.get(id).orElseThrow(() -> new ResourceNotFoundException("Group of users not found with id: " + id));
+			log.info("UsersGroup with id: " + id + " getted");
+			return ResponseEntity.ok().body(usersGroup);
+		} catch (Exception e) {
+			log.error("Unable to get UsersGroup with id: " + id + ", message: " + e.getMessage(), e);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	/**
@@ -121,9 +146,16 @@ public class UsersGroupController {
 		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> deleteById(@PathVariable Long id){
-		service.get(id).orElseThrow(() -> new ResourceNotFoundException("Group of users not found with id: " + id));
-		service.deleteById(id); 
-		return new ResponseEntity<>(HttpStatus.OK);
+		log.debug("Entering delete usersgroup endpoint");
+		try {
+			service.get(id).orElseThrow(() -> new ResourceNotFoundException("Group of users not found with id: " + id));
+			service.deleteById(id); 
+			log.info("UsersGroup with id: " + id + " was deleted");
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (Exception e) {
+			log.error("Unable to delete UsersGroup with id: " + id + ", message: " + e.getMessage(), e);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 }

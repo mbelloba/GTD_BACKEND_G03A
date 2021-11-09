@@ -1,5 +1,7 @@
 package com.capgemini.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name="Category", description="Category API")
 @RequestMapping("/category")
 public class CategoryController {
+	
+	private static final Logger log = LoggerFactory.getLogger(CategoryController.class);
 
 	@Autowired
 	private CategoryService	service;
@@ -53,7 +57,14 @@ public class CategoryController {
 		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> findAll(){
-		return new ResponseEntity<>(service.list() ,HttpStatus.OK);
+		log.debug("Entering get all categories endpoint");
+		try {
+			log.info("Categories getted");
+			return new ResponseEntity<>(service.list() ,HttpStatus.OK);
+		} catch (Exception e) {
+			log.error("Unable to get categories, message: " + e.getMessage(), e);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 
 	}
 	
@@ -77,8 +88,15 @@ public class CategoryController {
 		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> getCategory(@PathVariable(name = "id") Long id) throws ResourceNotFoundException{
-		Category category = service.get(id).orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
-		return ResponseEntity.ok().body(category);
+		log.debug("Entering get a category by id endpoint");
+		try {
+			Category category = service.get(id).orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
+			log.info("Category with id: " + id + " getted");
+			return ResponseEntity.ok().body(category);
+		} catch (Exception e) {
+			log.error("Unable to get category with id: " + id + ", message: " + e.getMessage(), e);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	/**
@@ -97,7 +115,14 @@ public class CategoryController {
 		     content= {@Content(mediaType = "application/json")})
 	})
 	public  ResponseEntity<?> save(@RequestBody Category category) {
-		return new ResponseEntity<>(service.create(category),HttpStatus.OK);
+		log.debug("Entering create category endpoint");
+		try {
+			log.info("New category created");
+			return new ResponseEntity<>(service.create(category),HttpStatus.OK);
+		} catch (Exception e) {
+			log.error("Unable to create category, message: " + e.getMessage(), e);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 
 	}
 	
@@ -122,9 +147,16 @@ public class CategoryController {
 		     content= {@Content(mediaType = "application/json")})
 	})
 	public ResponseEntity<?> deleteById(@PathVariable Long id) throws ResourceNotFoundException{
-		service.get(id).orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
-		service.deleteById(id); 
-		return new ResponseEntity<>(HttpStatus.OK);
+		log.debug("Entering delete category endpoint");
+		try {
+			service.get(id).orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
+			service.deleteById(id);
+			log.info("Category with id: " + id + " was deleted");
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (Exception e) {
+			log.error("Unable to delete category with id: " + id + ", message: " + e.getMessage(), e);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}	
 	}
 	
 	
@@ -150,13 +182,21 @@ public class CategoryController {
 	@Operation(summary="Update a category by id")
 	public ResponseEntity<?> updateCategory(@PathVariable(name = "id") Long id, @RequestBody Category categoryDetails) throws ResourceNotFoundException {
 		
-		Category category = service.get(id).orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
+		log.debug("Entering update category endpoint");
+		
+		try {
+			Category category = service.get(id).orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
 
-		category.setName(categoryDetails.getName());
-		category.setUser(categoryDetails.getUser());
-				
-		final Category updatedCategory = service.create(category);
-		return ResponseEntity.ok(updatedCategory);
+			category.setName(categoryDetails.getName());
+			category.setUser(categoryDetails.getUser());
+					
+			final Category updatedCategory = service.create(category);
+			log.info("Category with id: " + id + " was updated");
+			return ResponseEntity.ok(updatedCategory);		
+		} catch (Exception e) {
+			log.error("Unable to update category with id: " + id + ", message: " + e.getMessage(), e);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		
 		
 	}
