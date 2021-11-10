@@ -160,7 +160,7 @@ public class UserController {
 	/**
 	 * Update (or create) a user a from a PUT request
 	 * @param id Id of user to be updated/created
-	 * @param userDetails User object with updated properties
+	 * @param newUser User object with updated properties
 	 * @return HTTP response with updated user
 	 * @throws ResourceNotFoundException Exception in case user do not exist
 	 */

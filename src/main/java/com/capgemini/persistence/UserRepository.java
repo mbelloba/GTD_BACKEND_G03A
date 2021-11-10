@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	
 	/**
 	 * Find user from a determined login
-	 * @param username
+	 * @param login user login
 	 * @return user
 	 */
 	@Query("SELECT u FROM User u WHERE u.login = ?1")
