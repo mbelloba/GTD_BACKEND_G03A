@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.capgemini"},{"l":"com.capgemini.aspect"},{"l":"com.capgemini.configuration"},{"l":"com.capgemini.controller"},{"l":"com.capgemini.dto"},{"l":"com.capgemini.model"},{"l":"com.capgemini.persistence"}];updateSearchResults();

@@ -69,7 +69,7 @@ public class UsersGroupController {
 	
 	/**
 	 * Create a new users group in repository from POST request
-	 * @param usersgroup Group of users to be created
+	 * @param usersGroup Group of users to be created
 	 * @return HTTP response with users group created in body, and OK HTTP status
 	 */
 	@PostMapping("/")

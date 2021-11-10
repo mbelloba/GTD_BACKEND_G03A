@@ -97,12 +97,13 @@ public class Task {
 
 	/**
 	 * All args constructor
+	 * @param id Id of task
 	 * @param title Title of taks
 	 * @param comments Comments made to taks
 	 * @param created Date of task creation
 	 * @param planned Planned date to finish task
 	 * @param finished Boolean flag to indicate if task is done or not
-	 * @param user Users assigned to task
+	 * @param users Users assigned to task
 	 * @param category Category where task is assigned
 	 */
 	public Task(Long id, String title, String comments, Date created, Date planned, boolean finished, List<User> users,
